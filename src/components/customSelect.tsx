@@ -1,9 +1,9 @@
 import React from 'react';
 
 interface CustomSelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
-  label?: string;
   options: { value: string; label: string }[];
   customClassName?: string;
+  label?: string;
 }
 
 const CustomSelect  = ({

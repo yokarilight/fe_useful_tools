@@ -4,18 +4,18 @@ interface CustomButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement
   label: string;
   customClassName?: string;
   customStyle?: CSSProperties;
-  variant?: 'primary' | 'secondary' | 'danger';
   isDisabled?: boolean;
   isLoading?: boolean;
+  variant?: 'primary' | 'secondary' | 'danger';
 }
 
 const CustomButton = ({
   label,
   customClassName = '',
   customStyle = {},
-  variant = 'primary',
   isDisabled = false,
   isLoading = false,
+  variant = 'primary',
   ...props
 }: CustomButtonProps) => {
   const baseClasses = 'px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2';

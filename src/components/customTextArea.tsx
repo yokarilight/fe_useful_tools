@@ -1,19 +1,19 @@
 import React, { CSSProperties } from 'react';
 
 interface CustomTextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
-  label?: string;
-  errorMessage?: string;
   customClassName?: string;
   customStyle?: CSSProperties;
+  errorMessage?: string;
   isDisabled?: boolean;
+  label?: string;
 }
 
 const CustomTextArea = ({
-  label,
-  errorMessage,
-  customStyle,
   customClassName = '',
+  customStyle,
+  errorMessage,
   isDisabled = false,
+  label,
   ...props
 }: CustomTextAreaProps) => {
   const baseClasses =

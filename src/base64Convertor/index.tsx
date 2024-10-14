@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CustomButton from '@/components/customButton';
 import CustomTextArea from '@/components/customTextArea';
-import { errMsgs } from '@/constants';
+import { ERR_MSGS } from '@/constants';
 import { isValidBase64 } from '@/utils';
 
 const Base64Converter = () => {
@@ -11,7 +11,7 @@ const Base64Converter = () => {
 
   const encodeBase64 = () => {
     if (!input) {
-      setBase64ErrMsg(errMsgs.TEXT_EMPTY);
+      setBase64ErrMsg(ERR_MSGS.TEXT_EMPTY);
     }
     
     setOutput(btoa(input));
@@ -19,7 +19,7 @@ const Base64Converter = () => {
 
   const decodeBase64 = () => {
     if (!input) {
-      setBase64ErrMsg(errMsgs.TEXT_EMPTY);
+      setBase64ErrMsg(ERR_MSGS.TEXT_EMPTY);
     }
 
     try {
@@ -34,7 +34,7 @@ const Base64Converter = () => {
   const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(e.target.value);
     const isValid = isValidBase64(e.target.value);
-    isValid ? setBase64ErrMsg('') : setBase64ErrMsg(errMsgs.INVALID_BASE_64_TEXT);
+    isValid ? setBase64ErrMsg('') : setBase64ErrMsg(ERR_MSGS.INVALID_BASE_64_TEXT);
   };
 
   return (

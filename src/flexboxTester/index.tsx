@@ -1,5 +1,6 @@
 import React, { CSSProperties, useState } from 'react';
 import CustomSelect from '@/components/customSelect';
+import { GROUP_WITH_THREE_COLORS } from '@/constants';
 
 const FlexboxTester = () => {
   const [flexDirection, setFlexDirection] = useState<CSSProperties['flexDirection']>('row');
@@ -50,19 +51,22 @@ const FlexboxTester = () => {
         />
       </div>
       <div
+        className='border-solid-slate-300 flex p-4 h-48'
         style={{
-          display: 'flex',
           flexDirection,
           justifyContent,
           alignItems,
-          border: '1px solid #ccc',
-          padding: '16px',
-          height: '200px',
         }}
       >
-        <div style={{ backgroundColor: '#4CAF50', width: '50px', height: '50px' }}>1</div>
-        <div style={{ backgroundColor: '#2196F3', width: '50px', height: '50px' }}>2</div>
-        <div style={{ backgroundColor: '#FF5722', width: '50px', height: '50px' }}>3</div>
+        {GROUP_WITH_THREE_COLORS.map((color, index) => (
+          <div
+            key={`flex-tester-${color}`}
+            className='w-12 h-12'
+            style={{ backgroundColor: color }}
+          >
+            {index + 1}
+          </div>
+        ))}
       </div>
     </div>
   );

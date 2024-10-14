@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CustomButton from '@/components/customButton';
 import CustomInput from '@/components/customInput';
-import { errMsgs } from '@/constants';
+import { ERR_MSGS } from '@/constants';
 import { isLocalStorageValueValid } from '@/utils';
 
 const LocalStorageGenerator = () => {
@@ -13,7 +13,7 @@ const LocalStorageGenerator = () => {
   const handleOnChangeItemValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     const isValid = isLocalStorageValueValid(e.target.value);
-    isValid ? setValueErrMsg('') : setValueErrMsg(errMsgs.INVALID_LOCALSTORAGE_VALUE_TEXT);
+    isValid ? setValueErrMsg('') : setValueErrMsg(ERR_MSGS.INVALID_LOCALSTORAGE_VALUE_TEXT);
   };
 
   const generateCode = () => {

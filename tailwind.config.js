@@ -24,6 +24,21 @@ export default {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function({ addUtilities }) {
+      const newUtilities = {
+        '.border-solid-slate-300': {
+          border: '1px solid #cbd5e1',
+        },
+        '.flex-center': {
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+        },
+      };
+
+      addUtilities(newUtilities);
+    },
+  ],
 }
 
