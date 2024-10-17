@@ -25,7 +25,12 @@ function isLocalStorageValueValid(input: string) {
   return true;
 }
 
+function isBase64Image(base64String: string) {
+  return base64String.startsWith('data:image/');
+};
+
 export {
   isValidBase64,
   isLocalStorageValueValid,
+  isBase64Image,
 };
