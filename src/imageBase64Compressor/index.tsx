@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { AppContext } from '@/appContext';
+import CustomButton from '@/components/customButton';
+import CustomInput from '@/components/customInput';
+import CustomTextArea from '@/components/customTextArea';
+import CustomToast from '@/components/customToast';
 import { isBase64Image } from '@/utils';
+import { useCopy } from '@/utils/customHooks';
 
 const Base64ImageCompressor = () => {
+  const { showToast, setShowToast } = useContext(AppContext);
   const [ base64, setBase64 ] = useState<string>('');
   const [ originalSize, setOriginalSize ] = useState<number | null>(null);
   const [ compressedBase64, setCompressedBase64 ] = useState<string>('');
   const [ compressedSize, setCompressedSize ] = useState<number | null>(null);
   const [ compressionRatio, setCompressionRatio ] = useState<number>(1);
-  const [ copied, setCopied ] = useState<boolean>(false);
+  const [ isCopied, setIsCopied ] = useState(false);
+
+  const copyText = useCopy();
+
+  const isShowCopiedSuccessToast = showToast && isCopied;
 
   const getBase64Size = (base64String: string) => {
     const stringLength = base64String.length;
@@ -37,7 +48,6 @@ const Base64ImageCompressor = () => {
       // make background white
       ctx.fillStyle = 'white';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-  
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
     }
   
@@ -69,57 +79,72 @@ const Base64ImageCompressor = () => {
     }
   };
 
-  const handleCopyClick = () => {
-    if (compressedBase64) {
-      navigator.clipboard.writeText(compressedBase64)
-        .then(() => {
-          setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
-        })
-        .catch((err) => console.error('Failed to copy: ', err));
+  const handleShowCopiedSuccessToast = (isShow: boolean) => {
+    setShowToast(isShow);
+    setIsCopied(isShow);
+  };
+
+  const handleCopyClick = async () => {
+    const isSuccess = await copyText(compressedBase64);
+
+    if (isSuccess) {
+      handleShowCopiedSuccessToast(true);
+    } else {
+      console.error('Failed to copy text');
     }
   };
 
   return (
     <div>
       <h2>Base64 Image Compressor</h2>
-      <textarea
+      <CustomTextArea
         rows={4}
         cols={50}
-        placeholder='Paste your base64 image string here'
-        value={base64}
         onChange={handleBase64Input}
+        placeholder='Paste your base64 image string here'
       />
       {originalSize !== null && (
         <p>Original Base64 Size: {originalSize} bytes</p>
       )}
       <div>
-        <label htmlFor='compression'>Compression Ratio (0.01 - 1): </label>
-        <input
+        <CustomInput
           type='number'
-          id='compression'
+          label='Compression Ratio (0.01 - 1): '
           value={compressionRatio}
-          min='0.01'
-          max='1'
-          step='0.01'
           onChange={handleCompressionChange}
+          min={0.01}
+          max={1}
+          step={0.01}
         />
       </div>
-      <button onClick={handleCompressClick}>Compress Image</button>
+      <CustomButton
+        label='Compress Image'
+        variant='primary'
+        onClick={handleCompressClick}
+      />
       {compressedBase64 && (
         <div>
           <p>Compressed Base64 Size: {compressedSize} bytes</p>
-          <textarea
+          <CustomTextArea
             rows={4}
             cols={50}
             readOnly
             value={compressedBase64}
           />
           <img src={compressedBase64} alt='Compressed' style={{ maxWidth: '100%', height: 'auto' }} />
-          <button onClick={handleCopyClick}>
-            {copied ? 'Copied!' : 'Copy Base64'}
-          </button>
+          <CustomButton
+            label='Copy Base64'
+            variant='primary'
+            onClick={handleCopyClick}
+          />
         </div>
+      )}
+      {isShowCopiedSuccessToast && (
+        <CustomToast
+          message='Copy Successfully!'
+          type='success'
+          onClose={() => handleShowCopiedSuccessToast(false)}
+        />
       )}
     </div>
   );
